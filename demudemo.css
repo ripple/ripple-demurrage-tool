@@ -1,6 +1,17 @@
-section {
+.currencydef {
     border: 2px #444 groove;
     border-radius: 3px;
+    padding: 1em;
+}
+
+section {
     margin: 1em;
-    padding: 2em;
+}
+
+p {
+    margin: 0;
+}
+
+#to_display {
+    content: "⬇";
 }

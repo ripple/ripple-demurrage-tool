@@ -8,14 +8,13 @@ var Currency = ripple.Currency;
 $(document).ready(function() {
     //fill in some stuff on page load
     $("#to_display").click(calc_to_display);
+    $("#to_ledger").click(calc_to_ledger);
     $("#time_to_now_1").click(time_to_now);
     $("#cur_1").change(gen_curcode);
     $("#rate_1").change(gen_curcode);
     
+    gen_curcode();
     time_to_now();
-    $("#display_datetime_1").datetimepicker({
-        format: "yyyy-mm-ddThh:ii:ssZ"
-    });
 });
 
 function calc_to_display() {
@@ -34,7 +33,14 @@ function calc_to_display() {
 }
 
 function calc_to_ledger() {
-    //TODO
+    var ref_time = get_ref_time();
+    var curcode = gen_curcode();
+    var display_value = get_display_amount();
+    
+    ledgAmount =Amount.from_human(display_value+" "+curcode, {reference_date:ref_time});
+    //ledgAmount.set_issuer(ADDRESS_ONE);//this step seems unnecessary
+    
+    set_ledger_amount(ledgAmount.to_json().value);
 }
 
 
@@ -44,8 +50,13 @@ function gen_curcode() {
     c = Currency.from_json(threeletters+" ("+rate+"%pa)");
     
     if (c.is_valid()) {
-        $("#hex_1").val(c.to_hex());
-        return c.to_hex();
+        if (c.is_native()) {
+            alert("Error: XRP cannot have interest or demurrage.");     
+        } else {
+            $("#hex_1").val(c.to_hex());
+            $("#ledger_cur_1").text(c.to_json());
+            return c.to_hex();
+        }
     } else {
         $("#hex_1").val("(Invalid currency/rate)");
         return false;
@@ -65,6 +76,15 @@ function set_ledger_amount(value) {
     $("#ledger_val_1").val(value);
 }
 
+function get_display_amount() {
+    var display_val = $("#display_val_1").val();
+    var test = Amount.from_json(display_val+"/2/1");
+    if (!test.is_valid()) {
+        alert("Error: Invalid display value");
+    }
+    return test.to_text();
+}
+
 function set_display_amount(value) {
     $("#display_val_1").val(value);
 }
@@ -82,6 +102,7 @@ function get_ref_time() {
 
 function time_to_now() {
     t = new Date();
+    t.setMilliseconds(0);//Truncate ms to match Ripple convention
     $("#display_datetime_1").val( t.toISOString() );
 }
 

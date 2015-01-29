@@ -8,8 +8,6 @@
     <title>Demurrage Calculator</title>
 
     <link rel="stylesheet" type="text/css" href="demudemo.css" />
-<!--    <link rel="stylesheet" type="text/css" href="datetime/jquery.datetimepicker.css" /> -->
-    <link rel="stylesheet" type="text/css" href="bs-datetime/datetimepicker.css" />
     
     
 </head>
@@ -37,18 +35,18 @@
     
     <section class="ledger_val">
         <label for="ledger_val_1">Ledger value:</label>
-        <input id="ledger_val_1" type="number" size="15" value="100" />
+        <input id="ledger_val_1" type="number" size="15" value="100" step="any" />
         <label id="ledger_cur_1">XAU (-0.5%pa)</label>
     </section><!-- .ledger_val -->
     
     <section class="convert_buttons">
-        <input id="to_ledger" type="button" value="Calc ledger value" />
-        <input id="to_display" type="button" value="Calc display value" />
+        <input id="to_ledger" type="button" value="Calc ledger value ⬆" />
+        <input id="to_display" type="button" value="Calc display value ⬇" />
     </section><!-- .convert_buttons -->
     
     <section class="display_val">
         <label for="display_val_1">Display value:</label>
-        <input id="display_val_1" type="number" size="20">
+        <input id="display_val_1" type="number" size="20" step="any">
         
         <label for="display_datetime_1">At time:</label>
         <input id="display_datetime_1" type="datetime" size="24" />
@@ -61,11 +59,6 @@
     <!------------------- JavaScripts --------------->
     <!-- jQuery + plugins -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    
-    
-<!--    <script src="datetime/jquery.datetimepicker.js"></script> -->
-
-    <script src="bs-datetime/bootstrap-datetimepicker.js" type="text/javascript"></script>
     
     <!-- ripple-lib -->
     <script src="ripple-0.10.0.js" type="text/javascript"></script>
