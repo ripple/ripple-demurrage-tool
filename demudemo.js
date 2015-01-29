@@ -6,15 +6,18 @@ var Amount = ripple.Amount;
 var Currency = ripple.Currency;
 
 $(document).ready(function() {
-    //fill in some stuff on page load
+    //bind events
     $("#to_display").click(calc_to_display);
     $("#to_ledger").click(calc_to_ledger);
     $("#time_to_now_1").click(time_to_now);
     $("#cur_1").change(gen_curcode);
     $("#rate_1").change(gen_curcode);
+    $("#hex_1").change(parse_curcode);
     
+    //fill in some stuff on page load
     gen_curcode();
     time_to_now();
+    calc_to_display();
 });
 
 function calc_to_display() {
@@ -47,11 +50,18 @@ function calc_to_ledger() {
 function gen_curcode() {
     threeletters = $("#cur_1").val();
     rate = $("#rate_1").val();
-    c = Currency.from_json(threeletters+" ("+rate+"%pa)");
+    
+    //Workaround RLJS-188
+    if (rate.indexOf(".") == -1) {
+        rate = rate.concat(".0");
+    }
+    
+    var c = Currency.from_json(threeletters+" ("+rate+"%pa)");
     
     if (c.is_valid()) {
         if (c.is_native()) {
-            alert("Error: XRP cannot have interest or demurrage.");     
+            alert("Error: XRP cannot have interest or demurrage.");
+            return false;
         } else {
             $("#hex_1").val(c.to_hex());
             $("#ledger_cur_1").text(c.to_json());
@@ -59,6 +69,37 @@ function gen_curcode() {
         }
     } else {
         $("#hex_1").val("(Invalid currency/rate)");
+        return false;
+    }
+}
+
+function parse_curcode() {
+    hex = $("#hex_1").val();
+    
+    var c = Currency.from_hex(hex);
+    
+    if (c.is_valid()) {
+        if (c.is_native()) {
+            alert("Error: XRP cannot have interest or demurrage.");
+            return false;
+        } else {
+            threeletters = c.get_iso();
+            $("#cur_1").val(threeletters);
+            
+            //Convert rate to percentage
+            rate = (c.get_interest_at(0) -1) * 100;
+            $("#rate_1").val(rate);
+            
+            //some currencies' to_human() output is still hex
+            //if so, they won't have a space
+            if (c.to_human().indexOf(" ") != -1) {
+                $("#ledger_cur_1").text(c.to_json());
+            } else {
+                $("#ledger_cur_1").text("Unknown currency format");
+            }
+        }
+    } else {
+        alert("Invalid hex code for currency");
         return false;
     }
 }

@@ -24,17 +24,17 @@
         <span class="rate">
             <label for="rate_1">Rate:</label>
             <input id="rate_1" type="text" size="5" value="-0.5" />
-            <label for="rate_1" class="pa">% per annum </label>
+            <label for="rate_1" class="pa"><abbr title="For purposes of interest in Ripple, one 'year' is defined as 31536000 seconds, which is 365 days with no leap time.">% per annum </abbr></label>
         </span><!-- .rate -->
         <p>
             <span class="hexcode">Currency code:
-                <input id="hex_1" type="text" size="40" readonly="readonly" value="015841551A748AD2C1F76FF6ECB0CCCD00000000" />
+                <input id="hex_1" type="text" size="40" value="015841551A748AD2C1F76FF6ECB0CCCD00000000" />
             </span><!-- hexcode -->
         </p>
     </section><!-- .currencydef -->
     
     <section class="ledger_val">
-        <label for="ledger_val_1">Ledger value:</label>
+        <label for="ledger_val_1"><abbr title="This is the value that gets written to rippled's ledger.">Ledger value:</abbr></label>
         <input id="ledger_val_1" type="number" size="15" value="100" step="any" />
         <label id="ledger_cur_1">XAU (-0.5%pa)</label>
     </section><!-- .ledger_val -->
@@ -45,7 +45,7 @@
     </section><!-- .convert_buttons -->
     
     <section class="display_val">
-        <label for="display_val_1">Display value:</label>
+        <label for="display_val_1"><abbr title="This is how much the amount is actually worth at the specified time.">Display value:</abbr></label>
         <input id="display_val_1" type="number" size="20" step="any">
         
         <label for="display_datetime_1">At time:</label>
