@@ -57,7 +57,7 @@ function gen_curcode() {
     var rate = $("#rate_1").val();
     
     //Workaround RLJS-188
-    if (rate.indexOf(".") == -1) {
+    if (rate.indexOf(".") === -1) {
         rate = rate.concat(".0");
     }
     
@@ -99,7 +99,7 @@ function parse_curcode() {
         
         //some currencies' to_human() output is still hex
         //if so, they won't have a space
-        if (c.to_human().indexOf(" ") != -1) {
+        if (c.to_human().indexOf(" ") !== -1) {
             $("#ledger_cur_1").text(c.to_json());
         } else {
             $("#ledger_cur_1").text("Unknown currency format");
