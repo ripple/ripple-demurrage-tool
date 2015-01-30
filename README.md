@@ -6,3 +6,5 @@ for Ripple currencies that have built-in interest or demurrage.
 
 It utilizes [ripple-lib](https://github.com/ripple/ripple-lib) to perform the 
 calculations and jQuery to make the interface simple.
+
+[Try the demo!](http://mduo13.github.io/ripple-demurrage-tool/)
