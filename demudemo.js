@@ -30,6 +30,7 @@ function calc_to_display() {
         return false;
     }
     
+    //ADDRESS_ONE acts as a dummy issuer here. 
     var demAmount = Amount.from_json(ledger_amount+"/"+curcode+"/"+ADDRESS_ONE);
     demAmount = demAmount.applyInterest(ref_time);
     
@@ -45,8 +46,11 @@ function calc_to_ledger() {
     var curcode = gen_curcode();
     var display_value = get_display_amount();
     
-    var ledgAmount = Amount.from_human(display_value+" "+curcode, {reference_date:ref_time});
-    //ledgAmount.set_issuer(ADDRESS_ONE);//this step seems unnecessary
+    //Conveniently, ripple-lib automatically handles the conversion 
+    // from a Date object to Ripple time
+    var ledgAmount = Amount.from_human(display_value+" "+curcode, 
+                                        {reference_date:ref_time});
+    //ledgAmount.set_issuer(ADDRESS_ONE);//optionally define an issuer
     
     set_ledger_amount(ledgAmount.to_json().value);
 }
@@ -97,9 +101,10 @@ function parse_curcode() {
         rate = (c.get_interest_at(0) -1) * 100;
         $("#rate_1").val(rate);
         
-        //some currencies' to_human() output is still hex
+        //some malformed currencies' to_human() output is still hex
         //if so, they won't have a space
         if (c.to_human().indexOf(" ") !== -1) {
+            //c.to_json() outputs a string like "XAU (-0.5%pa)", not truly JSON
             $("#ledger_cur_1").text(c.to_json());
         } else {
             $("#ledger_cur_1").text("Unknown currency format");
@@ -109,6 +114,8 @@ function parse_curcode() {
 
 function get_ledger_amount() {
     var ledger_val = $("#ledger_val_1").val();
+    // here /2/1 are dummy values for currency code and issuer. This is really
+    // just checking that the string amount is valid, in-range number
     var test = Amount.from_json(ledger_val+"/2/1");
     if (!test.is_valid()) {
         display_error("Error: Invalid ledger value");
