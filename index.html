@@ -14,6 +14,12 @@
 <body>
     <h1>Ripple Demurrage Calculator (demo)</h1>
     <div id="demudemo_1" class="demudemo">
+    <p class="explanation intro">The Ripple Network supports currency definitions that have interest or demurrage built into the currency. This page demonstrates the use of <a href="https://github.com/ripple/ripple-lib">ripple-lib</a> to perform necessary operations on these currencies, including:</p>
+    <ul>
+        <li>Convert between human-readable currency definitions like &quot;XAU (-0.5%pa)&quot; to the 160-bit hex codes used within the Ripple Network.</li>
+        <li>Convert between the <strong>ledger value</strong> written to the network and the <strong>display value</strong> that represents the actual worth of that ledger value at a particular point in time.</li>
+    </ul>
+    <p>Be sure to check out the <a href="https://github.com/mDuo13/ripple-demurrage-tool/">source code</a>.</p>
     <form>
     
     <section class="currencydef">
@@ -26,11 +32,10 @@
             <input id="rate_1" type="text" size="5" value="-0.5" />
             <label for="rate_1" class="pa"><abbr title="For purposes of interest in Ripple, one 'year' is defined as 31536000 seconds, which is 365 days with no leap time.">% per annum </abbr></label>
         </span><!-- .rate -->
-        <p>
-            <span class="hexcode">Currency code:
-                <input id="hex_1" type="text" size="40" value="015841551A748AD2C1F76FF6ECB0CCCD00000000" />
-            </span><!-- hexcode -->
-        </p>
+        <span class="equals"> = </span>
+        <span class="hexcode">Currency code:
+            <input id="hex_1" type="text" size="40" value="015841551A748AD2C1F76FF6ECB0CCCD00000000" />
+        </span><!-- hexcode -->
     </section><!-- .currencydef -->
     
     <section class="ledger_val">
@@ -54,7 +59,13 @@
     </section><!-- .display_val -->
     
     </form>
-    </div><!--/#cxr_1-->
+    <div class="explanation more">
+        <h3>Further Explanation</h3>
+        <p><strong>Display values</strong> show the actual worth of a currency amount <em>at a given point in time</em>. Since interest applies continually, the worth of the currency holdings are only meaningful when they come with a reference time.</p>
+        <p><strong>Ledger values</strong> are written in <a href="https://ripple.com/build/rippled-apis/"><code>rippled</code></a>'s shared global ledger. As an optimization, these do not change to reflect demurrage or interest. Instead, client applications calculate the ledger amount as the theoretical value that equals the desired display amount after applying constant interest/demurrage since the Ripple Epoch. (This also removes the need to indicate a start point for demurrage.)</p>
+    </div>
+    
+    </div><!--/#demudemo_1-->
 
     <!------------------- JavaScripts --------------->
     <!-- jQuery + plugins -->
